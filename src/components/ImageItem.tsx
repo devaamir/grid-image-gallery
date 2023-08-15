@@ -1,8 +1,17 @@
 import React, {useState, memo} from 'react';
-import {View, Image, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 
 // dimensions
 const {height, width} = Dimensions.get('window');
+
+// components
+import ImageModal from './ImageModal';
 
 interface HeadingProps {
   id: number;
@@ -13,32 +22,44 @@ interface HeadingProps {
 const ImageItem: React.FC<HeadingProps> = ({source, numColumns}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          width: width / numColumns,
-          height: width / 2,
-        },
-      ]}>
-      <Image
-        defaultSource={require('../assets/images/default-image.png')}
-        source={
-          loading || error
-            ? require('../assets/images/default-image.png')
-            : {uri: source}
-        }
-        style={loading || error ? styles.defaultImageStyle : styles.image}
-        onLoadEnd={() => {
-          setLoading(false);
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          setOpenModal(true);
         }}
-        onError={() => {
-          setError(true);
-        }}
+        style={[
+          styles.container,
+          {
+            width: width / numColumns,
+            height: width / 2,
+          },
+        ]}>
+        <Image
+          defaultSource={require('../assets/images/default-image.png')}
+          source={
+            loading || error
+              ? require('../assets/images/default-image.png')
+              : {uri: source}
+          }
+          style={loading || error ? styles.defaultImageStyle : styles.image}
+          onLoadEnd={() => {
+            setLoading(false);
+          }}
+          onError={() => {
+            setError(true);
+          }}
+        />
+      </TouchableOpacity>
+
+      <ImageModal
+        visible={openModal}
+        setVisible={setOpenModal}
+        source={source}
       />
-    </View>
+    </>
   );
 };
 
