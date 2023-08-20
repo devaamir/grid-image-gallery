@@ -16,7 +16,6 @@ const Heading: React.FC<HeadingProps> = ({title}) => {
 const styles = StyleSheet.create({
   container: {
     marginLeft: 5,
-    // alignItems: 'center',
     marginBottom: 16,
   },
   headingText: {
